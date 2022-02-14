@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Annotation 인식 -->
+    <mvc:annotation-driven/>
+
+    <!-- 정적자원 mapping -->
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/css/**" location="/resources/css/"/>
+    <mvc:resources mapping="/fonts/**" location="/resources/fonts/"/>
+<!--    <mvc:resources mapping=="/bower_components/**" location"/resources/bower_components/"/>-->
+<!--    <mvc:resources mapping="/plugins/**" location="/resources/plugins/"/>-->
+<!--    <mvc:resources mapping="/dist/**" location="/resources/dist/"/>-->
+
+    <!-- viewResolver 설정 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- 기본 패키지 설정 -->
+    <context:component-scan base-package="com.project.lighteningmarket" />
+
+    <!-- LoginInterceptor 설정 -->
+    <bean id="loginInterceptor" class="com.project.lighteningmarket.commons.interceptor.LoginInterceptor"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/login/loginPost"/>
+            <ref bean="loginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- AuthInterceptor 설정 (사용자의 login 상태여부 확인) -->
+    <bean id="authInterceptor" class="com.project.lighteningmarket.commons.interceptor.AuthInterceptor"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/include/headbar"/>
+            <ref bean="authInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- RememberMeInterceptor 설정 (사용자가 접속할 경우, 자동으로 로그인 처리) -->
+    <bean id="rememberMeInterceptor" class="com.project.lighteningmarket.commons.interceptor.RememberMeInterceptor"/>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/"/>
+            <ref bean="rememberMeInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- 파일업로드에 필요한 bean -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 파일업로드 용량 -->
+        <property name="maxUploadSize" value="10485760"/>
+    </bean>
+    <!-- 파일업로드를 위한 디렉토리 설정 -->
+    <!-- String uploadPath = new String("업로드 경로") -->
+    <bean id="uploadPath" class="java.lang.String">
+        <!-- 파일업로드 디렉토리-->
+        <constructor-arg value="C:/images"/>
+    </bean>
+
+    <!-- 파일업로드를 위한 디렉토리 설정 -->
+    <!-- String uploadPath = new String("업로드 경로") -->
+    <bean id="imagePath" class="java.lang.String"/>
+</beans>

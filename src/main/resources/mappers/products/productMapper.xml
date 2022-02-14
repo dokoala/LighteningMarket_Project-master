@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.lighteningmarket.mappers.products.productMapper">
+    <!-- 01. 상품 전체 목록 -->
+    <select id="listProduct" resultType="com.project.lighteningmarket.products.domain.ProductsVO">
+        SELECT
+            proIdx AS productIdx,
+            id AS id,
+            title AS productTitle,
+            tradeArea AS tradeArea,
+            statement AS statement,
+            exchange AS exchange,
+            price AS productPrice,
+            description AS description,
+            count AS count,
+	        regDate AS regDate,
+            url AS productUrl
+        FROM tbl_product
+        ORDER BY title;
+    </select>
+    <!-- 02. 상품 상세보기 -->
+    <select id="detailProduct" resultType="com.project.lighteningmarket.products.domain.ProductsVO">
+        SELECT
+            proIdx AS productIdx,
+            id AS id,
+            title AS productTitle,
+            tradeArea AS tradeArea,
+            statement AS statement,
+            exchange AS exchange,
+            price AS productPrice,
+            description AS description,
+            count AS count,
+	        regDate AS regDate,
+            url AS productUrl
+        FROM tbl_product
+        WHERE proIdx = #{productIdx}
+    </select>
+
+    <!-- 03. 상품 추가하기 -->
+    <insert id="insertProduct" parameterType="com.project.lighteningmarket.products.domain.ProductsVO">
+        INSERT INTO tbl_product
+				(id,
+                title,
+                tradeArea,
+                statement,
+                exchange,
+                price,
+                description,
+                count,
+				url
+                )
+        VALUES (
+                 #{id},
+                 #{productTitle},
+                 #{tradeArea},
+                 #{statement},
+                 #{exchange},
+                 #{productPrice},
+                 #{description},
+                 #{count},
+                 #{productUrl}
+               )
+    </insert>
+
+    <!-- ID 찾기 -->
+    <select id="searchId" parameterType="string" resultType="string">
+        SELECT id
+        FROM bunjang.tbl_member
+        where session_key = #{id};
+    </select>
+
+    <!-- 05. 검색 후 목록 -->
+    <select id="searchProductList" parameterType="string" resultType="com.project.lighteningmarket.products.domain.ProductsVO">
+        SELECT
+            proIdx AS productIdx,
+            id AS id,
+            title AS productTitle,
+            tradeArea AS tradeArea,
+            statement AS statement,
+            exchange AS exchange,
+            price AS productPrice,
+            description AS description,
+            count AS count,
+	        regDate AS regDate,
+            url AS productUrl
+        FROM tbl_product
+        WHERE title like CONCAT('%',#{searchData},'%')
+        ORDER BY title;
+    </select>
+</mapper>

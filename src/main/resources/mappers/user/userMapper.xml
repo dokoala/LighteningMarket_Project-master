@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.lighteningmarket.mappers.user.UserMapper">
+
+    <resultMap id="userVOResultMap" type="UserVO">
+        <id property="id" column="id"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email" column="email"/>
+        <result property="pNumber" column="p_number"/>
+        <result property="regDate" column="reg_date"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="sessionLimit" column="session_limit"/>
+    </resultMap>
+
+    <!-- 회원 등록 -->
+    <insert id="signup">
+        INSERT INTO tbl_member (
+            id
+            , nickname
+            , password
+            , name
+            , email
+            , p_number
+        ) VALUES (
+            #{id}
+            , #{nickname}
+            , #{password}
+            , #{name}
+            , #{email}
+            , #{pNumber}
+         )
+    </insert>
+
+    <!-- 로그인 처리 -->
+    <select id="login" resultMap="userVOResultMap">
+        SELECT
+            *
+        FROM tbl_member
+        WHERE id = #{id}
+    </select>
+
+    <!-- 로그인 유지 처리 -->
+    <update id="keepLogin">
+        UPDATE tbl_member
+        SET session_key = #{sessionId}
+            , session_limit = #{sessionLimit}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 세선키 검증 -->
+    <select id="checkUserWithSessionKey" resultMap="userVOResultMap">
+        SELECT
+            *
+        FROM tbl_member
+        WHERE session_key = #{value}
+    </select>
+
+
+    <!-- 아이디 찾기 -->
+    <select id="idsearch" resultMap="userVOResultMap">
+        SELECT
+            id, name, email
+        FROM tbl_member
+        WHERE name = #{name}
+          AND email = #{email}
+    </select>
+    
+    <!-- 비밀번호 찾기 (1. 인증번호 받기) -->
+    <select id="emaildice" resultMap="userVOResultMap">
+        SELECT id, email
+        FROM tbl_member
+        WHERE id = #{id}
+          OR email = #{email}
+    </select>
+
+    <!-- 비밀번호 찾기 (2. 인증번호 확인된 회원 비밀번호 수정) -->
+    <update id="pwchange">
+        UPDATE tbl_member
+           SET password = #{password}
+         WHERE id = #{id}
+           AND email = #{email}
+    </update>
+</mapper>

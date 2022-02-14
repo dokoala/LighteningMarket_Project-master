@@ -1,0 +1,110 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+
+    <title>회원가입</title>
+
+    <link rel="stylesheet" type="text/css" href="/resources/signup/common.css">
+    <link rel="stylesheet" type="text/css" href="/resources/signup/lib.css">
+    <link rel="stylesheet" type="text/css" href="/resources/signup/swip.css">
+    <link rel="stylesheet" type="text/css" href="/resources/signup/_layout.scss">
+    <link rel="stylesheet" type="text/css" href="/resources/signup/_reset.scss">
+    <link rel="stylesheet" type="text/css" href="/resources/signup/member.scss">
+
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+<div id="wrap-contents" class="contents member-bg">
+    <div class="member-container">
+        <%-- 회원가입 --%>
+        <div class="brick-member">
+            <p class="brick-member__title single">회원가입</p>
+            <div class="brick-member__content pb-0">
+                <form method="post" name="member" id="frmMember" onsubmit="return check_member_form();">
+                    <div class="brick-member__form">
+                        <!-- 로그인 정보 -->
+                        <p class="form-title">로그인 정보</p>
+                        <div class="find-userinfo regist-info">
+                            <p class="input-area id">
+                                <label for="_label-id">아이디</label>
+                                <input type="text" name="user_id" onblur="valid_check_id()" placeholder="아이디는 영문 또는 숫자 6~16자리로 입력해 주세요." class="input-id" id="_label-id"></p>
+                            <p class="warning-sign" id="valid_check_msg_uid" style="display: none;"></p>
+                            <div class="input-area pwd">
+                                <label for="_label-pwd">
+                                    "비밀번호"
+                                    <span class="gt-layer" id="_layer-warning-pw">
+                                <button type="button" class="gt-open-layer" id="_btn-warning-pw"></button>
+                              </span>
+                                </label>
+                                <input type="password" name="user_pwd" onkeyup="valid_check_pwd(1)" maxlength="16" autocomplete="off" placeholder="비밀번호를 입력해 주세요. (8~16자 / 문자, 숫자, 특수문자 혼용)" id="_label-pwd"></div>
+                            <p class="warning-sign" id="valid_check_msg_pwd" style="display:none;"></p>
+                            <p class="input-area pwd">
+                                <label for="_label-pwd-ck">비밀번호 확인</label>
+                                <input type="password" name="user_pwd2" id="user_pwd2" onblur="valid_check_pwd(2);" maxlength="16" autocomplete="off" placeholder="비밀번호를 확인해 주세요.">
+                            </p>
+                            <p class="warning-sign" id="valid_check_msg_pwd_re" style="display:none;"></p>
+                        </div>
+
+                        <%-- 회원 정보 --%>
+                        <p class="form-title">회원 정보</p>
+                        <div class="find-userinfo regist-customer">
+                            <div id="_tab-individual">
+                                <div class="input-area name">
+                                    <label for="_label-name">이름</label>
+                                    <input type="text" name="hanname" onkeyup="valid_check_hanname();" placeholder="실명을 입력해 주세요." id="_label-name">
+                                </div>
+                                <p class="warning-sign" id="valid_check_msg_hanname" style="display:none;"></p>
+                            </div>
+                            <p class="input-area email">
+                                <label for="_label-email">이메일</label>
+                                <input type="text" name="email" onkeyup="activate_auth('ems');valid_check_email();" placeholder="이메일" id="_label-email">
+                                <span class="ico-middle">@</span>
+                                <select id="_select-email" name="select_email_domain" class="gt-input select-basic wide" title="이메일 주소" onchange="change_email_domain(this.value); valid_check_email(); activate_auth('ems');">
+                                    <option value>이메일주소</option>
+                                    <option value>직접입력</option>
+                                    <option value>hanmail.net</option>
+                                    <option value>naver.com</option>
+                                    <option value>gmail.com</option>
+                                    <option value>paran.com</option>
+                                </select>
+                                <input type="text" name="email_domain" onkeyup="activate_auth('ems');valid_check_email();" id="_email-direct" class="custom-email gt-hide">
+                            </p>
+                            <p class="warning-sign" id="valid_check_msg_email"></p>
+                            <p></p>
+                            <p class="input-area cellphone">
+                                <label for="_label-cellphone">휴대전화번호</label>
+                                <select class="gt-input select-basic" name="hp_no1" id="_label-cellphone" onchange="activate_auth('sms');valid_check_phone();">
+                                    <option value="010">010</option>
+                                    <option value="010">011</option>
+                                    <option value="010">016</option>
+                                    <option value="010">017</option>
+                                    <option value="010">018</option>
+                                    <option value="010">019</option>
+                                </select>
+                                <span class="ico-middle">-</span>
+                                <input type="tel" name="phone_all" onkeyup="valid_check_phone()" maxlength="8" placeholder="휴대전화번호를 - 없이 입력해주세요." title="휴대전화번호">
+                            </p>
+                            <p class="warning-sign" id="valid_check_msg_phone"></p>
+                            <p></p>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-basic-blue member-btn" onclick="ga('send', 'event', 'Join', 'member_register', '');">가입하기
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- //회원가입 -->
+    </div>
+</div>
+<!-- 본문 END -->
+</body>
+
+</html>

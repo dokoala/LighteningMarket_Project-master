@@ -1,0 +1,19 @@
+.login_container {
+    margin: auto;
+    padding: 80px;
+    height: 578px;
+}
+
+.login_row {
+    height: 300px;
+    width: 296px;
+    margin: auto;
+}
+
+.login_title_row {
+    text-align: center;
+}
+
+.login_footer {
+    text-align: center;
+}

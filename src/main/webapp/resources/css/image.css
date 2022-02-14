@@ -1,0 +1,11 @@
+.image_box {
+    position: relative;
+    width: 50%;
+    padding-bottom: 56.25%;
+}
+
+.image_box iframe {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+}
